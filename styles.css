@@ -49,11 +49,14 @@ body {
     width: 100%;
 }
 
+/* --- КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ --- */
 .header-top {
     display: flex;
-    justify-content: space-between; /* --- ИЗМЕНЕНО: для симметрии --- */
+    justify-content: space-between; /* Оставляем, чтобы раскидать боковые элементы */
     align-items: center;
     gap: 1rem;
+    position: relative; /* Делаем родителя относительным для позиционирования дочернего элемента */
+    min-height: 4rem; /* Задаем минимальную высоту, равную высоте аватара */
 }
 
 .header-bottom {
@@ -67,17 +70,26 @@ body {
     border-radius: 50%;
 }
 
+/* --- КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ --- */
 .SelectUser {
+    /* Вырываем элемент из потока и центрируем его абсолютно */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Идеальное центрирование */
+    
     padding: 0.8rem 1.5rem;
     border-radius: 2rem;
     border: 1px solid var(--border-color);
     font-size: 1.4rem;
+    width: auto; /* Ширина по контенту */
+    max-width: 40%; /* Ограничиваем максимальную ширину */
 }
 
 .BuySell {
     display: flex;
     align-items: center;
-    justify-content: space-around; /* --- ИЗМЕНЕНО: для симметрии --- */
+    justify-content: space-around;
     width: 100%;
     gap: 1rem;
 }
@@ -125,7 +137,6 @@ body {
     border-radius: 0.8rem;
     box-shadow: 0 0.2rem 0.5rem var(--shadow-color);
     margin: 0 1rem;
-    /* --- НОВОЕ: Отступ снизу, чтобы освободить место для закрепленного футера --- */
     padding-bottom: 8rem; 
 }
 
@@ -153,22 +164,20 @@ body {
 .catItems p { flex-grow: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; font-size: 1.3rem; font-weight: 500; }
 .catItems input { width: 90%; padding: 0.6rem; text-align: center; border: 1px solid #ccc; border-radius: 0.5rem; margin-top: auto; font-size: 1.4rem; }
 
-/* --- FOOTER (полностью переработан для закрепления) --- */
+/* --- FOOTER --- */
 .footer {
-    /* --- НОВОЕ: Закрепляем футер внизу --- */
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     z-index: 100;
-
     display: flex;
-    justify-content: space-around; /* Равномерно распределяем кнопки */
+    justify-content: space-around;
     align-items: center;
     gap: 1rem;
     padding: 1rem;
     background-color: var(--surface-bg);
-    border-top: 1px solid var(--border-color); /* Добавляем линию сверху для отделения */
+    border-top: 1px solid var(--border-color);
     box-shadow: 0 -0.2rem 0.5rem var(--shadow-color);
 }
 
@@ -188,6 +197,7 @@ body {
 .SentData:hover { background-color: #0b7dda; }
 
 /* ... (стили для истории и модального окна остаются без изменений) ... */
+
 /* --- АДАПТИВНОСТЬ (MEDIA QUERIES) --- */
 @media (max-width: 768px) {
     body {
@@ -195,37 +205,35 @@ body {
     }
 
     .header-top {
-        flex-wrap: wrap;
         justify-content: space-between;
     }
 
     /* --- ИЗМЕНЕНО: Делаем категории еще меньше --- */
     .categories {
-        gap: 1rem;
+        gap: 0.8rem; /* Еще уменьшаем расстояние */
         margin: 0 1rem;
-        padding-bottom: 8rem; /* Сохраняем отступ для футера */
+        padding-bottom: 8rem;
     }
     .catItems {
-        flex-basis: 8rem; /* <<-- Уменьшили еще сильнее */
-        min-height: 10rem;
+        flex-basis: 7rem; /* <<-- Уменьшили еще сильнее для 4 в ряд */
+        min-height: 9rem;
         padding: 0.5rem;
     }
     .catIcon {
-        font-size: 2.2rem; /* <<-- Уменьшили иконку */
+        font-size: 2rem; /* <<-- Уменьшили иконку */
     }
     .catItems p {
-        font-size: 1.1rem; /* <<-- Уменьшили текст */
+        font-size: 1rem; /* <<-- Уменьшили текст */
     }
 
-    /* --- ИЗМЕНЕНО: Стили для кнопок в закрепленном футере --- */
     .footer {
         padding: 0.8rem;
         gap: 0.8rem;
     }
     .SentData {
         font-size: 1.2rem;
-        padding: 0.8rem 1.2rem; /* Делаем кнопки компактнее */
-        flex-grow: 1; /* Позволяем кнопкам занимать равное пространство */
+        padding: 0.8rem 1.2rem;
+        flex-grow: 1;
     }
 
     /* Адаптивная таблица (без изменений) */
