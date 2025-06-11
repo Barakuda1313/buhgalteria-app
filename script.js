@@ -48,7 +48,11 @@ async function fetchRecords() {
         }
         const result = await response.json();
         records = result.data; // Сохраняем данные с сервера в наш кэш
-        updateTotals(); // Обновляем итоги на странице
+        
+        // <<< ИЗМЕНЕНИЕ: Вызываем отрисовку категорий и обновление итогов ЗДЕСЬ
+        // Теперь это произойдет только ПОСЛЕ того, как `records` заполнится
+        loadCategories(currentType); 
+        
     } catch (error) {
         console.error('Не удалось получить записи:', error);
         alert('Не удалось загрузить данные с сервера. Убедитесь, что он запущен.');
@@ -66,6 +70,7 @@ async function loadPage() {
             console.error("Ошибка чтения данных из localStorage:", e);
             tempInputValues = { 'Расход': {}, 'Приход': {} };
         }
+        await fetchRecords();
     }
 
     const today = new Date().toISOString().split('T')[0];
