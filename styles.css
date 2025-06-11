@@ -49,7 +49,6 @@ body {
     width: 100%;
 }
 
-/* --- КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ ДЛЯ СИММЕТРИИ --- */
 .header-top {
     display: flex;
     align-items: center;
@@ -57,22 +56,13 @@ body {
 }
 
 .header-col {
-    flex: 1; /* Каждая колонка занимает 1/3 доступного пространства */
+    flex: 1;
     display: flex;
 }
 
-.header-col.left {
-    justify-content: flex-start; /* Выравниваем контент влево */
-}
-
-.header-col.center {
-    justify-content: center; /* Выравниваем контент по центру */
-}
-
-.header-col.right {
-    justify-content: flex-end; /* Выравниваем контент вправо */
-}
-/* --- КОНЕЦ КЛЮЧЕВЫХ ИЗМЕНЕНИЙ --- */
+.header-col.left { justify-content: flex-start; }
+.header-col.center { justify-content: center; }
+.header-col.right { justify-content: flex-end; }
 
 .header-bottom {
     display: flex;
@@ -130,7 +120,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 2rem;
     font-size: 1.4rem;
-    max-width: 13rem; /* Ограничиваем ширину календаря */
+    max-width: 13rem;
 }
 
 /* --- КАТЕГОРИИ --- */
@@ -203,7 +193,100 @@ body {
 }
 .SentData:hover { background-color: #0b7dda; }
 
-/* ... (стили для истории и модального окна остаются без изменений) ... */
+/* --- СТИЛИ ДЛЯ СТРАНИЦЫ ИСТОРИИ (ВОССТАНОВЛЕНО) --- */
+.history-container {
+    width: 100%;
+    background-color: var(--surface-bg);
+    padding: 2rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 0.2rem 0.5rem var(--shadow-color);
+    margin: 1rem;
+}
+
+#historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+}
+
+#historyTable th, #historyTable td {
+    border: 1px solid var(--border-color);
+    padding: 1.2rem;
+    text-align: left;
+}
+
+#historyTable th {
+    background-color: #f2f2f2;
+}
+
+.income-text { color: var(--accent-green); font-weight: bold; }
+.expense-text { color: var(--accent-red); font-weight: bold; }
+
+#historyTable .actions button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.8rem;
+    margin: 0 0.5rem;
+}
+
+/* --- СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА (ВОССТАНОВЛЕНО) --- */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    padding-top: 6rem;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 2rem;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 50rem;
+    border-radius: 0.8rem;
+    position: relative;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    font-size: 2.8rem;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#editForm label {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+#editForm input, #editForm select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 0.4rem;
+}
+
+#editForm button {
+    margin-top: 2rem;
+}
 
 /* --- АДАПТИВНОСТЬ (MEDIA QUERIES) --- */
 @media (max-width: 768px) {
@@ -238,7 +321,7 @@ body {
         flex-grow: 1;
     }
 
-    /* Адаптивная таблица (без изменений) */
+    /* Адаптивная таблица (ВОССТАНОВЛЕНО) */
     #historyTable thead { display: none; }
     #historyTable, #historyTable tbody, #historyTable tr, #historyTable td { display: block; width: 100%; }
     #historyTable tr { margin-bottom: 1.5rem; border: 1px solid var(--border-color); border-radius: 0.8rem; padding: 1rem; }
