@@ -1,3 +1,22 @@
+/* --- БАЗОВЫЕ СТИЛИ И ПЕРЕМЕННЫЕ --- */
+:root {
+    --primary-bg: #f5f5f5;
+    --surface-bg: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --accent-green: #4CAF50;
+    --accent-red: #f44336;
+    --accent-blue: #2196F3;
+    --accent-yellow: #ffd600;
+}
+
+/* Устанавливаем базовый размер шрифта, чтобы 1rem = 10px */
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,116 +25,109 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5;
-    padding: 10px;
-    /* Добавим немного отступа сверху, если header фиксированный и контент может уходить под него */
-    /* Если .fixheader используется, возможно, понадобится padding-top для body или margin-top для .wrapper */
+    background-color: var(--primary-bg);
+    padding: 1rem;
+    font-size: 1.6rem; /* Стандартный размер текста (16px) */
+    color: var(--text-color);
 }
 
 .wrapper {
-    max-width: 800px;
+    max-width: 90rem; /* 900px */
+    width: 95%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    /* Если header фиксированный, добавьте отступ сверху, чтобы контент не перекрывался */
-    /* Например: margin-top: 60px; (высота хедера + небольшой отступ) */
+    gap: 1.5rem;
 }
 
+/* --- HEADER --- */
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.fixheader {
-    position: sticky; /* или fixed, если нужно чтобы он всегда был прижат к верху окна */
-    top: 0;
-    left: 0; /* Для fixed позиционирования */
-    right: 0; /* Для fixed позиционирования */
-    width: 100%; /* Для fixed позиционирования, чтобы занимал всю ширину */
+    flex-wrap: wrap; /* Позволяем переноситься элементам */
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--surface-bg);
+    border-radius: 0.8rem;
+    box-shadow: 0 0.2rem 0.5rem var(--shadow-color);
+    position: sticky;
+    top: 1rem;
     z-index: 100;
-    /* Важно: если header fixed, то .wrapper или первый элемент после header должен иметь margin-top,
-       чтобы контент не уезжал под header. Если sticky, то это обычно не нужно,
-       но тогда .wrapper не должен быть слишком узким, чтобы было куда скроллить.
-       В твоем index.html .fixheader используется, но .wrapper не имеет отступа.
-       Это может привести к тому, что верхняя часть .totalInfo будет под хедером.
-       Я добавлю margin-top к .wrapper в комментарии как возможное решение.
-    */
 }
 
 .userImg img {
-    width: 40px;
-    height: 40px;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
-    /* Добавим небольшой бордюр, если нужно */
-    /* border: 2px solid #ddd; */
 }
 
 .SelectUser {
-    padding: 8px 15px;
-    border-radius: 20px;
-    border: 1px solid #ddd;
-    background-color: white;
-    font-size: 14px;
+    padding: 0.8rem 1.5rem;
+    border-radius: 2rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-bg);
+    font-size: 1.4rem;
 }
 
 .BuySell {
     display: flex;
     align-items: center;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
 }
 
 .BuySell button {
-    padding: 8px 15px;
+    padding: 0.8rem 1.5rem;
     border: none;
-    border-radius: 20px;
-    background-color: #4CAF50; /* Зеленый для "Приход" */
+    border-radius: 2rem;
     color: white;
     cursor: pointer;
     font-weight: bold;
+    transition: transform 0.2s ease;
+}
+.BuySell button:hover {
+    transform: scale(1.05);
 }
 
-.BuySell .Sell { /* Уточняем селектор для кнопки "Расход" */
-    background-color: #f44336 !important; /* Красный для "Расход" */
+.BuySell .Buy {
+    background-color: var(--accent-green);
+}
+
+.BuySell .Sell {
+    background-color: var(--accent-red);
+}
+
+.total-value {
+    font-size: 1.4rem;
+    font-weight: bold;
 }
 
 .inputData {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 20px; /* Сделаем как у кнопок */
-    font-size: 14px; /* Увеличим немного для читаемости */
-    width: 130px; /* Немного увеличим ширину */
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 2rem;
+    font-size: 1.4rem;
+    max-width: 15rem; /* Ограничиваем максимальную ширину */
 }
 
-#totalInfo {
-    display: flex;
-    justify-content: space-around;
-    background-color: white;
-    padding: 15px 10px; 
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin-top: 3px; /* Уменьшили отступ */
-}
-
-#totalInfo div {
-    font-weight: bold;
-    font-size: 16px; /* Немного увеличим шрифт */
-}
-
+/* --- КАТЕГОРИИ --- */
 .categories {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px; /* Увеличим немного отступ между карточками */
-    padding: 20px 15px; /* Увеличим padding контейнера */
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+    background-color: var(--surface-bg);
+    border-radius: 0.8rem;
+    box-shadow: 0 0.2rem 0.5rem var(--shadow-color);
 }
 
 .catItems {
@@ -123,185 +135,149 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
-    border: 1px solid #e0e0e0; /* Слегка изменим цвет бордера */
-    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
     background-color: #f9f9f9;
-    transition: all 0.3s ease; /* Улучшим анимацию */
-    height: 130px;
+    transition: all 0.3s ease;
     text-align: center;
-    width: 120px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08); /* <<<< ВОТ ОНА, ТЕНЬ! */
+    box-shadow: 0 0.2rem 0.4rem rgba(0,0,0,0.08);
+    flex-basis: 12rem; /* Базовая ширина */
+    flex-grow: 1; /* Позволяем расти */
+    max-width: 15rem; /* Но не слишком сильно */
+    min-height: 13rem;
 }
 
-.catItems p { /* Текст категории */
+.catItems:hover {
+    transform: translateY(-0.3rem);
+    box-shadow: 0 0.4rem 0.8rem rgba(0,0,0,0.12);
+}
+
+.choise {
+    background-color: #fffde7;
+    box-shadow: 0 0 0 0.2rem var(--accent-yellow), 0 0.4rem 0.8rem rgba(0,0,0,0.15);
+    border-color: var(--accent-yellow);
+}
+
+.catIcon {
+    font-size: 2.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.catItems p {
     flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 5px;
-    font-size: 13px; /* Немного увеличим шрифт для названий */
-    font-weight: 500; /* Сделаем чуть жирнее */
-    color: #333; /* Темнее цвет текста */
-}
-
-.catItems:hover {
-    background-color: #f0f0f0;
-    transform: translateY(-2px); /* Небольшой эффект приподнимания при наведении */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.12); /* Усилим тень при наведении */
-}
-
-.choise {
-    background-color: #fffde7; /* Оставим этот цвет для выделения */
-    box-shadow: 0 0 0 2px #ffd600, 0 4px 8px rgba(0,0,0,0.15); /* Добавим основную тень и к выбранному элементу */
-    border-color: #ffd600; /* Можно и бордер подсветить */
-}
-
-.catIcon {
-    font-size: 28px; /* Немного увеличим иконки */
-    margin-bottom: 8px;
-    color: #555; /* Цвет иконок */
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 500;
 }
 
 .catItems input {
     width: 90%;
-    padding: 6px; /* Немного увеличим padding */
+    padding: 0.6rem;
     text-align: center;
-    border: 1px solid #ccc; /* Слегка изменим цвет бордера инпута */
-    border-radius: 5px;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
     margin-top: auto;
-    font-size: 14px; /* Увеличим шрифт в инпуте */
+    font-size: 1.4rem;
 }
 
+/* --- FOOTER --- */
 .footer {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    padding: 10px 0; /* Добавим отступ для футера */
+    flex-wrap: wrap; /* Перенос кнопок на новой строке */
+    gap: 1.5rem;
+    padding: 1rem 0;
 }
 
 .SentData {
-    padding: 10px 25px; /* Увеличим кнопки */
+    padding: 1rem 2.5rem;
     border: none;
-    border-radius: 20px;
-    background-color: #2196F3;
+    border-radius: 2rem;
+    background-color: var(--accent-blue);
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
     font-weight: bold;
-    font-size: 15px; /* Увеличим шрифт на кнопках */
+    font-size: 1.5rem;
+    text-decoration: none;
 }
 
 .SentData:hover {
     background-color: #0b7dda;
 }
 
-#statusConnection {
-    font-size: 24px; /* Увеличим иконку статуса */
-    /* Можно добавить цвета для разных статусов, если будешь их менять через JS */
-    /* color: green; */
-}
-
-/* Стили для скрытия стрелок в input[type=number] */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type="number"] {
-    -moz-appearance: textfield;
-}
-input[type="number"]:hover,
-input[type="number"]:focus {
-    -moz-appearance: number-input; /* Показываем стрелки при наведении/фокусе для Firefox, если нужно */
-}
-
-/* Стили для страницы истории */
+/* --- СТРАНИЦА ИСТОРИИ --- */
 .history-container {
     width: 100%;
-    overflow-x: auto; /* Для прокрутки на маленьких экранах */
+    background-color: var(--surface-bg);
+    padding: 2rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 0.2rem 0.5rem var(--shadow-color);
 }
 
 #historyTable {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 2rem;
 }
 
 #historyTable th, #historyTable td {
-    border: 1px solid #ddd;
-    padding: 12px;
+    border: 1px solid var(--border-color);
+    padding: 1.2rem;
     text-align: left;
 }
 
 #historyTable th {
     background-color: #f2f2f2;
-    font-weight: bold;
 }
 
-#historyTable tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-#historyTable tr:hover {
-    background-color: #f1f1f1;
-}
-
-.income-text {
-    color: #28a745;
-    font-weight: bold;
-}
-
-.expense-text {
-    color: #dc3545;
-    font-weight: bold;
-}
-
-#historyTable .actions {
-    text-align: center;
-}
+.income-text { color: var(--accent-green); font-weight: bold; }
+.expense-text { color: var(--accent-red); font-weight: bold; }
 
 #historyTable .actions button {
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 18px;
-    margin: 0 5px;
+    font-size: 1.8rem;
+    margin: 0 0.5rem;
 }
 
-/* Стили для модального окна */
+/* --- МОДАЛЬНОЕ ОКНО --- */
 .modal {
     display: none; 
     position: fixed; 
-    z-index: 100; 
+    z-index: 1000; 
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.5);
+    padding-top: 6rem;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
+    margin: 5% auto;
+    padding: 2rem;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 8px;
+    width: 90%;
+    max-width: 50rem;
+    border-radius: 0.8rem;
     position: relative;
 }
 
 .close-button {
     color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: 1rem;
+    right: 2rem;
+    font-size: 2.8rem;
+    font-weight: bold;
 }
 
 .close-button:hover,
@@ -313,40 +289,89 @@ input[type="number"]:focus {
 
 #editForm label {
     display: block;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 #editForm input, #editForm select {
     width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
+    padding: 0.8rem;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 0.4rem;
 }
 
 #editForm button {
-    margin-top: 20px;
+    margin-top: 2rem;
 }
 
-/* Контейнер для кнопки и суммы под ней */
-.button-container {
-    display: flex;
-    flex-direction: column; /* Располагаем элементы друг под другом */
-    align-items: center;    /* Выравниваем по центру по горизонтали */
-    margin: 0 10px;         /* Небольшой отступ по бокам */
-}
+/* --- АДАПТИВНОСТЬ (MEDIA QUERIES) --- */
+@media (max-width: 768px) {
+    body {
+        font-size: 1.5rem; /* Слегка уменьшим базовый шрифт на мобильных */
+    }
 
-/* Стили для самой суммы */
-.total-value {
-    margin-top: 4px;      /* Небольшой отступ сверху от кнопки */
-    font-size: 14px;      /* Уменьшим шрифт */
-    color: #333;          /* Сделаем цвет текста чуть темнее */
-    font-weight: bold;    /* Сделаем шрифт жирным */
-}
+    .header {
+        flex-direction: column; /* Ставим элементы хедера друг под друга */
+        align-items: stretch; /* Растягиваем по ширине */
+        top: 0;
+        border-radius: 0;
+        width: 100vw;
+        margin-left: -1rem; /* Компенсируем padding у body */
+    }
+    
+    .wrapper {
+        padding-top: 18rem; /* Добавляем отступ сверху, чтобы контент не уезжал под липкий хедер */
+    }
 
-/* Возможно, понадобится выровнять и сам блок с кнопками */
-.BuySell {
-    display: flex;
-    align-items: center; /* Выравниваем все элементы по центру по вертикали */
+    .BuySell {
+        justify-content: center;
+    }
+
+    .footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .SentData {
+        text-align: center;
+    }
+
+    /* Адаптивная таблица */
+    #historyTable thead {
+        display: none; /* Скрываем заголовки таблицы */
+    }
+
+    #historyTable, #historyTable tbody, #historyTable tr, #historyTable td {
+        display: block; /* Делаем строки и ячейки блочными элементами */
+        width: 100%;
+    }
+
+    #historyTable tr {
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.8rem;
+        padding: 1rem;
+    }
+
+    #historyTable td {
+        border: none;
+        padding-left: 50%; /* Оставляем место для "заголовка" */
+        position: relative;
+        text-align: right; /* Выравниваем текст справа */
+    }
+
+    #historyTable td::before {
+        content: attr(data-label); /* Используем data-атрибут как заголовок */
+        position: absolute;
+        left: 1rem;
+        width: 45%;
+        padding-right: 1rem;
+        font-weight: bold;
+        text-align: left; /* Выравниваем "заголовок" слева */
+    }
+    
+    #historyTable td.actions {
+        padding-left: 0;
+        text-align: center;
+    }
 }

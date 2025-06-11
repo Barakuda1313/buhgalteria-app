@@ -1,4 +1,3 @@
-<!-- history.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,63 +9,123 @@
 </head>
 <body>
     <div class="wrapper">
-        <div class="header">
-            <h1>История операций</h1>
-            <a href="/" class="SentData" style="text-decoration: none;">На главную</a>
-        </div>
-
         <div class="history-container">
+            <h2>История операций</h2>
+            <a href="/" class="SentData" style="display: inline-block; margin-top: 1rem;">Назад</a>
             <table id="historyTable">
                 <thead>
                     <tr>
                         <th>Дата</th>
-                        <th>Пользователь</th>
                         <th>Тип</th>
                         <th>Категория</th>
                         <th>Сумма</th>
+                        <th>Пользователь</th>
                         <th>Действия</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Сюда будут загружаться записи из БД -->
+                    <!-- Данные будут загружаться сюда -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Модальное окно для редактирования (скрыто по умолчанию) -->
+    <!-- Модальное окно для редактирования -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2>Редактировать запись</h2>
+            <h3>Редактировать запись</h3>
             <form id="editForm">
-                <input type="hidden" id="edit-id">
-                <label for="edit-date">Дата:</label>
-                <input type="date" id="edit-date" required>
+                <input type="hidden" id="editId">
                 
-                <label for="edit-user">Пользователь:</label>
-                <select id="edit-user" required>
+                <label for="editDate">Дата:</label>
+                <input type="date" id="editDate" required>
+                
+                <label for="editType">Тип:</label>
+                <select id="editType" required>
+                    <option value="income">Приход</option>
+                    <option value="expense">Расход</option>
+                </select>
+                
+                <label for="editCategory">Категория:</label>
+                <input type="text" id="editCategory" required>
+                
+                <label for="editAmount">Сумма:</label>
+                <input type="number" id="editAmount" required>
+                
+                <label for="editUser">Пользователь:</label>
+                <select id="editUser" required>
                     <option value="Aleksandr">Саньчи</option>
                     <option value="Tatiana">Таньчи</option>
                 </select>
-
-                <label for="edit-type">Тип:</label>
-                <select id="edit-type" required>
-                    <option value="Расход">Расход</option>
-                    <option value="Приход">Приход</option>
-                </select>
-
-                <label for="edit-category">Категория:</label>
-                <input type="text" id="edit-category" required>
-
-                <label for="edit-amount">Сумма:</label>
-                <input type="number" id="edit-amount" required>
-
+                
                 <button type="submit" class="SentData">Сохранить изменения</button>
             </form>
         </div>
     </div>
 
-    <script src="history.js"></script>
+    <script>
+        // Ваш JS для загрузки данных, открытия/закрытия модального окна и т.д.
+        // Важно: при генерации строк таблицы в JS, добавляйте data-label к каждой <td>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Пример функции для отображения данных
+            function displayHistory(data) {
+                const tableBody = document.querySelector('#historyTable tbody');
+                tableBody.innerHTML = ''; // Очищаем таблицу
+
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    // Добавляем data-label к каждой ячейке
+                    row.innerHTML = `
+                        <td data-label="Дата">${item.date}</td>
+                        <td data-label="Тип" class="${item.type === 'income' ? 'income-text' : 'expense-text'}">${item.type === 'income' ? 'Приход' : 'Расход'}</td>
+                        <td data-label="Категория">${item.category}</td>
+                        <td data-label="Сумма">${item.amount} ₽</td>
+                        <td data-label="Пользователь">${item.user}</td>
+                        <td data-label="Действия" class="actions">
+                            <button onclick="editEntry('${item.id}')">✏️</button>
+                            <button onclick="deleteEntry('${item.id}')">🗑️</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            // Пример данных для демонстрации
+            const sampleData = [
+                { id: 1, date: '2024-07-29', type: 'income', category: 'Зарплата', amount: 50000, user: 'Aleksandr' },
+                { id: 2, date: '2024-07-28', type: 'expense', category: 'Продукты', amount: 1500, user: 'Tatiana' }
+            ];
+
+            displayHistory(sampleData);
+
+            // Здесь должен быть ваш код для работы с модальным окном
+            const modal = document.getElementById('editModal');
+            const closeButton = document.querySelector('.close-button');
+            closeButton.onclick = () => modal.style.display = 'none';
+            window.onclick = (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+
+        function editEntry(id) {
+            // Ваша логика для открытия модального окна и заполнения его данными
+            console.log('Edit entry', id);
+            document.getElementById('editModal').style.display = 'block';
+            // ...загрузка данных в форму
+        }
+
+        function deleteEntry(id) {
+            // Ваша логика для удаления записи
+            console.log('Delete entry', id);
+            if (confirm('Вы уверены, что хотите удалить эту запись?')) {
+                // ...логика удаления
+            }
+        }
+    </script>
 </body>
 </html>
