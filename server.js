@@ -31,6 +31,75 @@ app.use(express.json());
 // Теперь браузер сможет сам загружать history.html, history.js и т.д.
 app.use(express.static('.')); 
 
+// --- Маршрут для сохранения новой записи ---
+app.post('/api/records', (req, res) => {
+    const { date, user, type, category, amount } = req.body;
+    if (!date || !user || !type || !category || !amount) {
+        res.status(400).json({ "error": "Не все поля были переданы." });
+        return;
+    }
+    const sql = 'INSERT INTO records (date, user, type, category, amount) VALUES (?, ?, ?, ?, ?)';
+    const params = [date, user, type, category, amount];
+    db.run(sql, params, function(err) {
+        if (err) {
+            res.status(500).json({ "error": err.message });
+            return;
+        }
+        res.status(201).json({
+            "message": "success",
+            "data": { id: this.lastID, ...req.body }
+        });
+    });
+});
+
+// <<< НОВЫЙ МАРШРУТ: Для удаления записи по ID ---
+// Сработает на DELETE-запрос, например: /api/records/15
+app.delete('/api/records/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'DELETE FROM records WHERE id = ?';
+    db.run(sql, id, function(err) {
+        if (err) {
+            res.status(500).json({ "error": err.message });
+            return;
+        }
+        // this.changes вернет количество удаленных строк. Если 1 - значит успешно.
+        res.json({ "message": "deleted", "changes": this.changes });
+    });
+});
+
+// <<< НОВЫЙ МАРШРУТ: Для обновления (редактирования) записи по ID ---
+// Сработает на PUT-запрос, например: /api/records/15
+app.put('/api/records/:id', (req, res) => {
+    const id = req.params.id;
+    const { date, user, type, category, amount } = req.body;
+
+    if (!date || !user || !type || !category || !amount) {
+        res.status(400).json({ "error": "Не все поля были переданы для обновления." });
+        return;
+    }
+
+    const sql = `UPDATE records set 
+                    date = ?, 
+                    user = ?, 
+                    type = ?, 
+                    category = ?, 
+                    amount = ? 
+                 WHERE id = ?`;
+    const params = [date, user, type, category, amount, id];
+
+    db.run(sql, params, function(err) {
+        if (err) {
+            res.status(500).json({ "error": err.message });
+            return;
+        }
+        res.json({
+            message: "success",
+            data: { id: id, ...req.body },
+            changes: this.changes
+        });
+    });
+});
+
 // --- API: Получить все записи из истории ---
 app.get('/api/history', (req, res) => {
     const sql = `SELECT * FROM operations ORDER BY date DESC, id DESC`;
