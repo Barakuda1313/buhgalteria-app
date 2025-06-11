@@ -48,7 +48,7 @@ async function fetchRecords() {
             throw new Error('Сетевой ответ был не в порядке.');
         }
         const result = await response.json();
-        records = result.data; // Сохраняем данные с сервера в наш кэш
+        records = result.data || []; // Сохраняем данные с сервера в наш кэш
         
         // <<< ИЗМЕНЕНИЕ: Вызываем отрисовку категорий и обновление итогов ЗДЕСЬ
         // Теперь это произойдет только ПОСЛЕ того, как `records` заполнится
