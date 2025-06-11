@@ -1,130 +1,115 @@
-// history.js
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('editModal');
+    const closeButton = document.querySelector('.close-button');
+    const editForm = document.getElementById('editForm');
 
-const API_URL = '/api/records';
-const tableBody = document.querySelector('#historyTable tbody');
-const modal = document.getElementById('editModal');
-const editForm = document.getElementById('editForm');
-const closeModalButton = document.querySelector('.close-button');
-
-// Функция для загрузки и отображения записей
-async function loadRecords() {
-    try {
-        const response = await fetch(API_URL);
-        const { data } = await response.json();
-        
-        tableBody.innerHTML = ''; // Очищаем таблицу перед заполнением
-
-        data.forEach(record => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${record.date}</td>
-                <td>${record.user === 'Aleksandr' ? 'Саньчи' : 'Таньчи'}</td>
-                <td class="${record.type === 'Приход' ? 'income-text' : 'expense-text'}">${record.type}</td>
-                <td>${record.category}</td>
-                <td>${record.amount} ₽</td>
-                <td class="actions">
-                    <button class="edit-btn" data-id="${record.id}">✏️</button>
-                    <button class="delete-btn" data-id="${record.id}">❌</button>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-    } catch (error) {
-        console.error('Ошибка при загрузке записей:', error);
-        alert('Не удалось загрузить историю операций.');
-    }
-}
-
-// Функция для удаления записи
-async function deleteRecord(id) {
-    if (!confirm('Вы уверены, что хотите удалить эту запись?')) {
-        return;
-    }
-    try {
-        const response = await fetch(`${API_URL}/${id}`, {
-            method: 'DELETE',
-        });
-        if (!response.ok) throw new Error('Ошибка при удалении');
-        
-        loadRecords(); // Перезагружаем таблицу
-    } catch (error) {
-        console.error('Ошибка при удалении записи:', error);
-        alert('Не удалось удалить запись.');
-    }
-}
-
-// Функция для открытия модального окна с данными для редактирования
-async function openEditModal(id) {
-    try {
-        // Найдем нужную запись в уже загруженных данных
-        const response = await fetch(API_URL);
-        const { data } = await response.json();
-        const recordToEdit = data.find(rec => rec.id == id);
-
-        if (recordToEdit) {
-            document.getElementById('edit-id').value = recordToEdit.id;
-            document.getElementById('edit-date').value = recordToEdit.date;
-            document.getElementById('edit-user').value = recordToEdit.user;
-            document.getElementById('edit-type').value = recordToEdit.type;
-            document.getElementById('edit-category').value = recordToEdit.category;
-            document.getElementById('edit-amount').value = recordToEdit.amount;
-            modal.style.display = 'block';
+    // Закрытие модального окна по кнопке
+    if(closeButton) {
+        closeButton.onclick = function() {
+            modal.style.display = "none";
         }
-    } catch (error) {
-        console.error('Ошибка при получении данных для редактирования:', error);
+    }
+
+    // Закрытие модального окна по клику вне его
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Обработка сохранения формы редактирования
+    if(editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveEdit();
+        });
+    }
+
+    // Загружаем историю при открытии страницы
+    loadHistory();
+});
+
+function loadHistory() {
+    const history = JSON.parse(localStorage.getItem('allEntries')) || [];
+    const tableBody = document.querySelector('#historyTable tbody');
+    
+    if (!tableBody) return; // Если таблицы нет на странице, выходим
+    
+    tableBody.innerHTML = '';
+
+    // Сортируем историю по дате от новой к старой
+    history.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    history.forEach(item => {
+        const row = tableBody.insertRow();
+        
+        // Добавляем data-label для адаптивности
+        row.innerHTML = `
+            <td data-label="Дата">${item.date}</td>
+            <td data-label="Тип" class="${item.type === 'income' ? 'income-text' : 'expense-text'}">${item.type === 'income' ? 'Приход' : 'Расход'}</td>
+            <td data-label="Категория">${item.category}</td>
+            <td data-label="Сумма">${item.amount} ₽</td>
+            <td data-label="Пользователь">${item.user}</td>
+            <td data-label="Действия" class="actions">
+                <button onclick="openEditModal('${item.id}')">✏️</button>
+                <button onclick="deleteEntry('${item.id}')">🗑️</button>
+            </td>
+        `;
+    });
+}
+
+function deleteEntry(id) {
+    if (confirm('Вы уверены, что хотите удалить эту запись?')) {
+        let history = JSON.parse(localStorage.getItem('allEntries')) || [];
+        
+        // --- ИСПРАВЛЕНИЕ ЗДЕСЬ ---
+        // Преобразуем ID из строки в число для корректного сравнения
+        const numericId = Number(id);
+        const updatedHistory = history.filter(item => item.id !== numericId);
+        
+        localStorage.setItem('allEntries', JSON.stringify(updatedHistory));
+        
+        // Перезагружаем таблицу, чтобы отобразить изменения
+        loadHistory();
     }
 }
 
-// Обработчик отправки формы редактирования
-editForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const id = document.getElementById('edit-id').value;
-    const updatedRecord = {
-        date: document.getElementById('edit-date').value,
-        user: document.getElementById('edit-user').value,
-        type: document.getElementById('edit-type').value,
-        category: document.getElementById('edit-category').value,
-        amount: Number(document.getElementById('edit-amount').value),
-    };
+function openEditModal(id) {
+    const history = JSON.parse(localStorage.getItem('allEntries')) || [];
+    const numericId = Number(id);
+    const entry = history.find(item => item.id === numericId);
 
-    try {
-        const response = await fetch(`${API_URL}/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedRecord),
-        });
-        if (!response.ok) throw new Error('Ошибка при обновлении');
-
-        modal.style.display = 'none';
-        loadRecords(); // Перезагружаем таблицу
-    } catch (error) {
-        console.error('Ошибка при обновлении записи:', error);
-        alert('Не удалось обновить запись.');
+    if (entry) {
+        document.getElementById('editId').value = entry.id;
+        document.getElementById('editDate').value = entry.date;
+        document.getElementById('editType').value = entry.type;
+        document.getElementById('editCategory').value = entry.category;
+        document.getElementById('editAmount').value = entry.amount;
+        document.getElementById('editUser').value = entry.user;
+        
+        document.getElementById('editModal').style.display = 'block';
     }
-});
+}
 
-// Единый обработчик кликов по таблице (делегирование событий)
-tableBody.addEventListener('click', (e) => {
-    const target = e.target;
-    if (target.classList.contains('delete-btn')) {
-        const id = target.dataset.id;
-        deleteRecord(id);
-    }
-    if (target.classList.contains('edit-btn')) {
-        const id = target.dataset.id;
-        openEditModal(id);
-    }
-});
+function saveEdit() {
+    const id = document.getElementById('editId').value;
+    const numericId = Number(id);
 
-// Закрытие модального окна
-closeModalButton.addEventListener('click', () => {
-    modal.style.display = 'none';
-});
-window.addEventListener('click', (e) => {
-    if (e.target == modal) {
-        modal.style.display = 'none';
-    }
-});
+    let history = JSON.parse(localStorage.getItem('allEntries')) || [];
+    const entryIndex = history.findIndex(item => item.id === numericId);
 
-// Загружаем записи при старте страницы
-document.addEventListener('DOMContentLoaded', loadRecords);
+    if (entryIndex > -1) {
+        history[entryIndex] = {
+            id: numericId,
+            date: document.getElementById('editDate').value,
+            type: document.getElementById('editType').value,
+            category: document.getElementById('editCategory').value,
+            amount: parseFloat(document.getElementById('editAmount').value),
+            user: document.getElementById('editUser').value
+        };
+
+        localStorage.setItem('allEntries', JSON.stringify(history));
+        document.getElementById('editModal').style.display = 'none';
+        loadHistory();
+    }
+}
