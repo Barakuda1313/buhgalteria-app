@@ -5,7 +5,7 @@ let currentType = 'Расход';
 let records = []; // Этот массив теперь будет кэшем данных с сервера
 let tempInputValues = { 'Расход': {}, 'Приход': {} };
 const LOCAL_STORAGE_KEY = 'buhgalteriaTempData';
-const API_URL = '/api/records'; // Адрес нашего бэкенда
+const API_URL = '/api/history'; // Адрес нашего бэкенда
 
 let categories = {
     'Расход': [
