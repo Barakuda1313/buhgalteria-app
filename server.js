@@ -30,90 +30,84 @@ app.use(express.json());
 // Теперь браузер сможет сам загружать history.html, history.js и т.д.
 app.use(express.static('.')); 
 
-// --- Маршрут для получения всех записей ---
-app.get('/api/records', (req, res) => {
-    const sql = "SELECT * FROM records ORDER BY date DESC, id DESC"; // Сортируем по убыванию даты
+// --- API: Получить все записи из истории ---
+app.get('/api/history', (req, res) => {
+    const sql = `SELECT * FROM operations ORDER BY date DESC, id DESC`;
     db.all(sql, [], (err, rows) => {
         if (err) {
             res.status(500).json({ "error": err.message });
             return;
         }
-        res.json({
-            "message": "success",
-            "data": rows
-        });
+        res.json(rows);
     });
 });
 
-// --- Маршрут для сохранения новой записи ---
-app.post('/api/records', (req, res) => {
-    const { date, user, type, category, amount } = req.body;
-    if (!date || !user || !type || !category || !amount) {
-        res.status(400).json({ "error": "Не все поля были переданы." });
-        return;
-    }
-    const sql = 'INSERT INTO records (date, user, type, category, amount) VALUES (?, ?, ?, ?, ?)';
-    const params = [date, user, type, category, amount];
-    db.run(sql, params, function(err) {
+// --- API: Получить ОДНУ запись по ID (для редактирования) ---
+app.get('/api/history/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'SELECT * FROM operations WHERE id = ?';
+    db.get(sql, id, (err, row) => {
         if (err) {
             res.status(500).json({ "error": err.message });
             return;
         }
-        res.status(201).json({
-            "message": "success",
-            "data": { id: this.lastID, ...req.body }
-        });
+        if (row) {
+            res.json(row);
+        } else {
+            res.status(404).json({ "message": "Запись не найдена" });
+        }
     });
 });
 
-// <<< НОВЫЙ МАРШРУТ: Для удаления записи по ID ---
-// Сработает на DELETE-запрос, например: /api/records/15
-app.delete('/api/records/:id', (req, res) => {
+// --- API: Удалить запись по ID ---
+app.delete('/api/history/:id', (req, res) => {
     const id = req.params.id;
-    const sql = 'DELETE FROM records WHERE id = ?';
+    const sql = 'DELETE FROM operations WHERE id = ?';
     db.run(sql, id, function(err) {
         if (err) {
             res.status(500).json({ "error": err.message });
             return;
         }
-        // this.changes вернет количество удаленных строк. Если 1 - значит успешно.
-        res.json({ "message": "deleted", "changes": this.changes });
+        if (this.changes > 0) {
+            res.json({ "message": "Запись успешно удалена" });
+        } else {
+            res.status(404).json({ "message": "Запись не найдена" });
+        }
     });
 });
 
-// <<< НОВЫЙ МАРШРУТ: Для обновления (редактирования) записи по ID ---
-// Сработает на PUT-запрос, например: /api/records/15
-app.put('/api/records/:id', (req, res) => {
+// --- API: Обновить запись по ID ---
+app.put('/api/history/:id', (req, res) => {
     const id = req.params.id;
-    const { date, user, type, category, amount } = req.body;
+    const { date, type, category, amount, user } = req.body;
 
-    if (!date || !user || !type || !category || !amount) {
-        res.status(400).json({ "error": "Не все поля были переданы для обновления." });
-        return;
+    if (!date || !type || !category || amount === undefined || !user) {
+        return res.status(400).json({ "error": "Все поля обязательны" });
     }
 
-    const sql = `UPDATE records set 
-                    date = ?, 
-                    user = ?, 
-                    type = ?, 
-                    category = ?, 
-                    amount = ? 
-                 WHERE id = ?`;
-    const params = [date, user, type, category, amount, id];
-
+    const sql = `UPDATE operations SET date = ?, type = ?, category = ?, amount = ?, user = ? WHERE id = ?`;
+    const params = [date, type, category, amount, user, id];
     db.run(sql, params, function(err) {
         if (err) {
             res.status(500).json({ "error": err.message });
             return;
         }
-        res.json({
-            message: "success",
-            data: { id: id, ...req.body },
-            changes: this.changes
-        });
+        if (this.changes > 0) {
+            res.json({ message: "Запись успешно обновлена" });
+        } else {
+            res.status(404).json({ "message": "Запись не найдена" });
+        }
     });
 });
 
+// Обслуживание статических файлов (HTML, CSS, JS) должно быть в конце
+app.use(express.static(path.join(__dirname, '')));
+
+// Запускаем сервер
+app.listen(port, () => {
+    console.log(`Сервер запущен на http://localhost:${port}`);
+    console.log(`Откройте http://localhost:${port}/history.html в браузере`);
+});
 
 app.listen(PORT, () => {
     console.log(`Сервер запущен и слушает порт ${PORT}`);
