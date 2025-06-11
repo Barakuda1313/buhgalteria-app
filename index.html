@@ -11,21 +11,29 @@
 
 <body onload="loadPage()">
     <div class="wrapper">
-        <!-- ВЕСЬ ВЕРХНИЙ БЛОК ТЕПЕРЬ ОДНО ЦЕЛОЕ -->
         <div class="header fixheader">
-            <!-- Верхний уровень хедера -->
+            <!-- Верхний уровень хедера с новой структурой колонок -->
             <div class="header-top">
-                <div class="userImg">
-                    <img src="" alt="User" id="currentUserImg">
+                <!-- Левая колонка -->
+                <div class="header-col left">
+                    <div class="userImg">
+                        <img src="" alt="User" id="currentUserImg">
+                    </div>
                 </div>
-                <select class="SelectUser" id="currentUser" onchange="changeUserImg(event)">
-                    <option value="Aleksandr">Саньчи</option>
-                    <option value="Tatiana">Таньчи</option>
-                </select>
-                <input class="inputData" id="inputData" type="date" min="2024-01-01" max="2049-12-31" />
+                <!-- Центральная колонка -->
+                <div class="header-col center">
+                    <select class="SelectUser" id="currentUser" onchange="changeUserImg(event)">
+                        <option value="Aleksandr">Саньчи</option>
+                        <option value="Tatiana">Таньчи</option>
+                    </select>
+                </div>
+                <!-- Правая колонка -->
+                <div class="header-col right">
+                    <input class="inputData" id="inputData" type="date" min="2024-01-01" max="2049-12-31" />
+                </div>
             </div>
             
-            <!-- Нижний уровень хедера с кнопками и суммами -->
+            <!-- Нижний уровень хедера -->
             <div class="header-bottom">
                 <div class="BuySell" id="divButtonImg">
                     <div class="button-container">
@@ -45,7 +53,7 @@
             <!-- Категории будут загружаться динамически из script.js -->
         </div>
 
-        <!-- Этот блок тоже будет прокручиваться -->
+        <!-- Этот блок будет закреплен внизу -->
         <div class="footer">
             <a href="/history.html" class="SentData" style="text-decoration: none;">История</a>
             <button class="SentData" onclick="saveData()">Сохранить</button>

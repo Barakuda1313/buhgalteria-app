@@ -49,15 +49,30 @@ body {
     width: 100%;
 }
 
-/* --- КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ --- */
+/* --- КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ ДЛЯ СИММЕТРИИ --- */
 .header-top {
     display: flex;
-    justify-content: space-between; /* Оставляем, чтобы раскидать боковые элементы */
     align-items: center;
-    gap: 1rem;
-    position: relative; /* Делаем родителя относительным для позиционирования дочернего элемента */
-    min-height: 4rem; /* Задаем минимальную высоту, равную высоте аватара */
+    width: 100%;
 }
+
+.header-col {
+    flex: 1; /* Каждая колонка занимает 1/3 доступного пространства */
+    display: flex;
+}
+
+.header-col.left {
+    justify-content: flex-start; /* Выравниваем контент влево */
+}
+
+.header-col.center {
+    justify-content: center; /* Выравниваем контент по центру */
+}
+
+.header-col.right {
+    justify-content: flex-end; /* Выравниваем контент вправо */
+}
+/* --- КОНЕЦ КЛЮЧЕВЫХ ИЗМЕНЕНИЙ --- */
 
 .header-bottom {
     display: flex;
@@ -70,20 +85,11 @@ body {
     border-radius: 50%;
 }
 
-/* --- КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ --- */
 .SelectUser {
-    /* Вырываем элемент из потока и центрируем его абсолютно */
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%); /* Идеальное центрирование */
-    
     padding: 0.8rem 1.5rem;
     border-radius: 2rem;
     border: 1px solid var(--border-color);
     font-size: 1.4rem;
-    width: auto; /* Ширина по контенту */
-    max-width: 40%; /* Ограничиваем максимальную ширину */
 }
 
 .BuySell {
@@ -124,6 +130,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 2rem;
     font-size: 1.4rem;
+    max-width: 13rem; /* Ограничиваем ширину календаря */
 }
 
 /* --- КАТЕГОРИИ --- */
@@ -204,26 +211,21 @@ body {
         font-size: 1.5rem;
     }
 
-    .header-top {
-        justify-content: space-between;
-    }
-
-    /* --- ИЗМЕНЕНО: Делаем категории еще меньше --- */
     .categories {
-        gap: 0.8rem; /* Еще уменьшаем расстояние */
+        gap: 0.8rem;
         margin: 0 1rem;
         padding-bottom: 8rem;
     }
     .catItems {
-        flex-basis: 7rem; /* <<-- Уменьшили еще сильнее для 4 в ряд */
+        flex-basis: 7rem;
         min-height: 9rem;
         padding: 0.5rem;
     }
     .catIcon {
-        font-size: 2rem; /* <<-- Уменьшили иконку */
+        font-size: 2rem;
     }
     .catItems p {
-        font-size: 1rem; /* <<-- Уменьшили текст */
+        font-size: 1rem;
     }
 
     .footer {
