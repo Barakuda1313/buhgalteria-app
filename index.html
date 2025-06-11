@@ -23,15 +23,20 @@
             </div>
 
             <div class="BuySell" id="divButtonImg">
-                <button class="Buy" onclick="Entrance()">Приход</button>
-                <button class="Sell" onclick="Expenses()">Расход</button>
+                <!-- Контейнер для кнопки "Приход" и её суммы -->
+                <div class="button-container">
+                    <button class="Buy" onclick="Entrance()">Приход</button>
+                    <div class="total-value"><span id="incomeTotal">0</span> ₽</div>
+                </div>
+
+                <!-- Контейнер для кнопки "Расход" и её суммы -->
+                <div class="button-container">
+                    <button class="Sell" onclick="Expenses()">Расход</button>
+                    <div class="total-value"><span id="expenseTotal">0</span> ₽</div>
+                </div>
+                
                 <input class="inputData" id="inputData" type="date" min="2024-01-01" max="2049-12-31" />
             </div>
-        </div>
-
-        <div id="totalInfo">
-            <div>Приход: <span id="incomeTotal">0</span> ₽</div>
-            <div>Расход: <span id="expenseTotal">0</span> ₽</div>
         </div>
 
         <div class="categories" id="boxCategories">
@@ -41,7 +46,6 @@
         <div class="footer">
             <a href="/history.html" class="SentData" style="text-decoration: none;">История</a>
             <button class="SentData" onclick="saveData()">Сохранить</button>
-            <!-- Изменил "Отмена" на "Очистить" и привязал к новой функции -->
             <button class="SentData" onclick="clearAllInputs()">Очистить</button>
         </div>
     </div>

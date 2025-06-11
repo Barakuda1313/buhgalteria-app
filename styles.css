@@ -328,3 +328,25 @@ input[type="number"]:focus {
 #editForm button {
     margin-top: 20px;
 }
+
+/* Контейнер для кнопки и суммы под ней */
+.button-container {
+    display: flex;
+    flex-direction: column; /* Располагаем элементы друг под другом */
+    align-items: center;    /* Выравниваем по центру по горизонтали */
+    margin: 0 10px;         /* Небольшой отступ по бокам */
+}
+
+/* Стили для самой суммы */
+.total-value {
+    margin-top: 4px;      /* Небольшой отступ сверху от кнопки */
+    font-size: 14px;      /* Уменьшим шрифт */
+    color: #333;          /* Сделаем цвет текста чуть темнее */
+    font-weight: bold;    /* Сделаем шрифт жирным */
+}
+
+/* Возможно, понадобится выровнять и сам блок с кнопками */
+.BuySell {
+    display: flex;
+    align-items: center; /* Выравниваем все элементы по центру по вертикали */
+}
