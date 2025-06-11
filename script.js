@@ -43,7 +43,7 @@ let categories = {
 // <<< ИЗМЕНЕНИЕ: Функция для загрузки всех данных с сервера
 async function fetchRecords() {
     try {
-        const response = await fetch(API_URL_records);
+        const response = await fetch(API_URL_history);
         if (!response.ok) {
             throw new Error('Сетевой ответ был не в порядке.');
         }
