@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 // <<< ИЗМЕНЕНИЕ: Добавляем middleware для раздачи статических файлов (html, css, js)
 // Теперь браузер сможет сам загружать history.html, history.js и т.д.
-//app.use(express.static('.')); 
+app.use(express.static('.')); 
 
 // --- API: Получить все записи из истории ---
 app.get('/api/history', (req, res) => {
@@ -100,15 +100,15 @@ app.put('/api/history/:id', (req, res) => {
     });
 });
 
-// Обслуживание статических файлов (HTML, CSS, JS) должно быть в конце
-//app.use(express.static(path.join(__dirname, '')));
-
-// Запускаем сервер
-app.listen(port, () => {
-    console.log(`Сервер запущен на http://localhost:${port}`);
-    console.log(`Откройте http://localhost:${port}/history.html в браузере`);
-});
+// // Запускаем сервер
+// app.listen(PORT, () => {
+//     console.log(`Сервер запущен на http://localhost:${port}`);
+//     console.log(`Откройте http://localhost:${port}/history.html в браузере`);
+// });
 
 app.listen(PORT, () => {
     console.log(`Сервер запущен и слушает порт ${PORT}`);
 });
+
+// Обслуживание статических файлов (HTML, CSS, JS) должно быть в конце
+app.use(express.static(path.join(__dirname, '')));
