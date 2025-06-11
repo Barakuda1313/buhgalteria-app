@@ -102,7 +102,7 @@ app.put('/api/records/:id', (req, res) => {
 
 // --- API: Получить все записи из истории ---
 app.get('/api/history', (req, res) => {
-    const sql = `SELECT * FROM operations ORDER BY date DESC, id DESC`;
+    const sql = `SELECT * FROM records ORDER BY date DESC, id DESC`;
     db.all(sql, [], (err, rows) => {
         if (err) {
             res.status(500).json({ "error": err.message });
@@ -115,7 +115,7 @@ app.get('/api/history', (req, res) => {
 // --- API: Получить ОДНУ запись по ID (для редактирования) ---
 app.get('/api/history/:id', (req, res) => {
     const id = req.params.id;
-    const sql = 'SELECT * FROM operations WHERE id = ?';
+    const sql = 'SELECT * FROM records WHERE id = ?';
     db.get(sql, id, (err, row) => {
         if (err) {
             res.status(500).json({ "error": err.message });
@@ -132,7 +132,7 @@ app.get('/api/history/:id', (req, res) => {
 // --- API: Удалить запись по ID ---
 app.delete('/api/history/:id', (req, res) => {
     const id = req.params.id;
-    const sql = 'DELETE FROM operations WHERE id = ?';
+    const sql = 'DELETE FROM records WHERE id = ?';
     db.run(sql, id, function(err) {
         if (err) {
             res.status(500).json({ "error": err.message });
@@ -155,7 +155,7 @@ app.put('/api/history/:id', (req, res) => {
         return res.status(400).json({ "error": "Все поля обязательны" });
     }
 
-    const sql = `UPDATE operations SET date = ?, type = ?, category = ?, amount = ?, user = ? WHERE id = ?`;
+    const sql = `UPDATE records SET date = ?, type = ?, category = ?, amount = ?, user = ? WHERE id = ?`;
     const params = [date, type, category, amount, user, id];
     db.run(sql, params, function(err) {
         if (err) {
