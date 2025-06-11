@@ -5,7 +5,8 @@ let currentType = 'Расход';
 let records = []; // Этот массив теперь будет кэшем данных с сервера
 let tempInputValues = { 'Расход': {}, 'Приход': {} };
 const LOCAL_STORAGE_KEY = 'buhgalteriaTempData';
-const API_URL = '/api/history'; // Адрес нашего бэкенда
+const API_URL_records = '/api/records'; // Для записи
+const API_URL_history = '/api/history'; // Для получение записей
 
 let categories = {
     'Расход': [
@@ -42,7 +43,7 @@ let categories = {
 // <<< ИЗМЕНЕНИЕ: Функция для загрузки всех данных с сервера
 async function fetchRecords() {
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL_records);
         if (!response.ok) {
             throw new Error('Сетевой ответ был не в порядке.');
         }
@@ -159,7 +160,7 @@ async function saveData() {
     // Отправляем каждую запись на сервер
     try {
         for (const record of recordsToSave) {
-            const response = await fetch(API_URL, {
+            const response = await fetch(API_URL_records, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(record)
