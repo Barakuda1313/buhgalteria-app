@@ -11,38 +11,41 @@
 
 <body onload="loadPage()">
     <div class="wrapper">
+        <!-- ВЕСЬ ВЕРХНИЙ БЛОК ТЕПЕРЬ ОДНО ЦЕЛОЕ -->
         <div class="header fixheader">
-            <div class="userImg">
-                <img src="" alt="User" id="currentUserImg">
-            </div>
-            <div>
+            <!-- Верхний уровень хедера -->
+            <div class="header-top">
+                <div class="userImg">
+                    <img src="" alt="User" id="currentUserImg">
+                </div>
                 <select class="SelectUser" id="currentUser" onchange="changeUserImg(event)">
                     <option value="Aleksandr">Саньчи</option>
                     <option value="Tatiana">Таньчи</option>
                 </select>
-            </div>
-
-            <div class="BuySell" id="divButtonImg">
-                <!-- Контейнер для кнопки "Приход" и её суммы -->
-                <div class="button-container">
-                    <button class="Buy" onclick="Entrance()">Приход</button>
-                    <div class="total-value"><span id="incomeTotal">0</span> ₽</div>
-                </div>
-
-                <!-- Контейнер для кнопки "Расход" и её суммы -->
-                <div class="button-container">
-                    <button class="Sell" onclick="Expenses()">Расход</button>
-                    <div class="total-value"><span id="expenseTotal">0</span> ₽</div>
-                </div>
-                
                 <input class="inputData" id="inputData" type="date" min="2024-01-01" max="2049-12-31" />
+            </div>
+            
+            <!-- Нижний уровень хедера с кнопками и суммами -->
+            <div class="header-bottom">
+                <div class="BuySell" id="divButtonImg">
+                    <div class="button-container">
+                        <button class="Buy" onclick="Entrance()">Приход</button>
+                        <div class="total-value"><span id="incomeTotal">0</span> ₽</div>
+                    </div>
+                    <div class="button-container">
+                        <button class="Sell" onclick="Expenses()">Расход</button>
+                        <div class="total-value"><span id="expenseTotal">0</span> ₽</div>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- Этот блок будет прокручиваться -->
         <div class="categories" id="boxCategories">
             <!-- Категории будут загружаться динамически из script.js -->
         </div>
 
+        <!-- Этот блок тоже будет прокручиваться -->
         <div class="footer">
             <a href="/history.html" class="SentData" style="text-decoration: none;">История</a>
             <button class="SentData" onclick="saveData()">Сохранить</button>
