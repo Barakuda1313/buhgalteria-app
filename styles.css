@@ -307,25 +307,47 @@ body {
 /* --- АДАПТИВНОСТЬ (MEDIA QUERIES) --- */
 @media (max-width: 768px) {
     body {
-        font-size: 1.5rem; /* Слегка уменьшим базовый шрифт на мобильных */
+        font-size: 1.5rem;
     }
 
     .header {
-        flex-direction: column; /* Ставим элементы хедера друг под друга */
-        align-items: stretch; /* Растягиваем по ширине */
+        /* --- ИЗМЕНЕНО --- */
+        /* Мы больше не выстраиваем все в колонку, а позволяем переноситься. */
+        /* flex-direction: column; <-- УБРАЛИ ЭТО ПРАВИЛО */
+        justify-content: center; /* Центрируем группы элементов */
         top: 0;
         border-radius: 0;
         width: 100vw;
-        margin-left: -1rem; /* Компенсируем padding у body */
+        margin-left: -1rem;
     }
     
     .wrapper {
-        padding-top: 18rem; /* Добавляем отступ сверху, чтобы контент не уезжал под липкий хедер */
+        /* --- ИЗМЕНЕНО --- */
+        /* Значительно уменьшаем отступ, так как хедер стал ниже */
+        padding-top: 15rem; 
     }
 
     .BuySell {
         justify-content: center;
     }
+
+    /* --- ИЗМЕНЕНО --- */
+    /* Уменьшаем сами карточки категорий, чтобы больше помещалось в ряд */
+    .categories {
+        gap: 1rem; /* Уменьшаем расстояние между карточками */
+    }
+    .catItems {
+        flex-basis: 9rem; /* Уменьшаем базовую ширину */
+        min-height: 11rem; /* Слегка уменьшаем высоту */
+        padding: 0.8rem;
+    }
+    .catIcon {
+        font-size: 2.4rem; /* Уменьшаем иконку */
+    }
+    .catItems p {
+        font-size: 1.2rem; /* Уменьшаем текст */
+    }
+
 
     .footer {
         flex-direction: column;
@@ -336,13 +358,13 @@ body {
         text-align: center;
     }
 
-    /* Адаптивная таблица */
+    /* Адаптивная таблица (без изменений) */
     #historyTable thead {
-        display: none; /* Скрываем заголовки таблицы */
+        display: none;
     }
 
     #historyTable, #historyTable tbody, #historyTable tr, #historyTable td {
-        display: block; /* Делаем строки и ячейки блочными элементами */
+        display: block;
         width: 100%;
     }
 
@@ -355,19 +377,19 @@ body {
 
     #historyTable td {
         border: none;
-        padding-left: 50%; /* Оставляем место для "заголовка" */
+        padding-left: 50%;
         position: relative;
-        text-align: right; /* Выравниваем текст справа */
+        text-align: right;
     }
 
     #historyTable td::before {
-        content: attr(data-label); /* Используем data-атрибут как заголовок */
+        content: attr(data-label);
         position: absolute;
         left: 1rem;
         width: 45%;
         padding-right: 1rem;
         font-weight: bold;
-        text-align: left; /* Выравниваем "заголовок" слева */
+        text-align: left;
     }
     
     #historyTable td.actions {
