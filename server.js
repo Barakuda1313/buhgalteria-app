@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 // <<< ИЗМЕНЕНИЕ: Добавляем middleware для раздачи статических файлов (html, css, js)
 // Теперь браузер сможет сам загружать history.html, history.js и т.д.
-app.use(express.static('.')); 
+//app.use(express.static('.')); 
 
 // --- API: Получить все записи из истории ---
 app.get('/api/history', (req, res) => {
