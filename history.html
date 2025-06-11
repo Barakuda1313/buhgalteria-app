@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Данные будут загружаться сюда -->
+                    <!-- Данные будут загружаться сюда из history.js -->
                 </tbody>
             </table>
         </div>
@@ -64,68 +64,7 @@
         </div>
     </div>
 
-    <script>
-        // Ваш JS для загрузки данных, открытия/закрытия модального окна и т.д.
-        // Важно: при генерации строк таблицы в JS, добавляйте data-label к каждой <td>
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Пример функции для отображения данных
-            function displayHistory(data) {
-                const tableBody = document.querySelector('#historyTable tbody');
-                tableBody.innerHTML = ''; // Очищаем таблицу
-
-                data.forEach(item => {
-                    const row = document.createElement('tr');
-                    
-                    // Добавляем data-label к каждой ячейке
-                    row.innerHTML = `
-                        <td data-label="Дата">${item.date}</td>
-                        <td data-label="Тип" class="${item.type === 'income' ? 'income-text' : 'expense-text'}">${item.type === 'income' ? 'Приход' : 'Расход'}</td>
-                        <td data-label="Категория">${item.category}</td>
-                        <td data-label="Сумма">${item.amount} ₽</td>
-                        <td data-label="Пользователь">${item.user}</td>
-                        <td data-label="Действия" class="actions">
-                            <button onclick="editEntry('${item.id}')">✏️</button>
-                            <button onclick="deleteEntry('${item.id}')">🗑️</button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            }
-
-            // Пример данных для демонстрации
-            const sampleData = [
-                { id: 1, date: '2024-07-29', type: 'income', category: 'Зарплата', amount: 50000, user: 'Aleksandr' },
-                { id: 2, date: '2024-07-28', type: 'expense', category: 'Продукты', amount: 1500, user: 'Tatiana' }
-            ];
-
-            displayHistory(sampleData);
-
-            // Здесь должен быть ваш код для работы с модальным окном
-            const modal = document.getElementById('editModal');
-            const closeButton = document.querySelector('.close-button');
-            closeButton.onclick = () => modal.style.display = 'none';
-            window.onclick = (event) => {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            }
-        });
-
-        function editEntry(id) {
-            // Ваша логика для открытия модального окна и заполнения его данными
-            console.log('Edit entry', id);
-            document.getElementById('editModal').style.display = 'block';
-            // ...загрузка данных в форму
-        }
-
-        function deleteEntry(id) {
-            // Ваша логика для удаления записи
-            console.log('Delete entry', id);
-            if (confirm('Вы уверены, что хотите удалить эту запись?')) {
-                // ...логика удаления
-            }
-        }
-    </script>
+    <!-- Вся логика теперь находится в этом файле -->
+    <script src="history.js" defer></script>
 </body>
 </html>

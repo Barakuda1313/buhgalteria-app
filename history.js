@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Загружаем историю при открытии страницы
+    // Загружаем историю из localStorage при открытии страницы
     loadHistory();
 });
 
@@ -62,8 +62,6 @@ function deleteEntry(id) {
     if (confirm('Вы уверены, что хотите удалить эту запись?')) {
         let history = JSON.parse(localStorage.getItem('allEntries')) || [];
         
-        // --- ИСПРАВЛЕНИЕ ЗДЕСЬ ---
-        // Преобразуем ID из строки в число для корректного сравнения
         const numericId = Number(id);
         const updatedHistory = history.filter(item => item.id !== numericId);
         
