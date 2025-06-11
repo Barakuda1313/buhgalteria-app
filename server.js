@@ -3,6 +3,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Используем порт от хостинга, или 3000 для локальной работы
