@@ -101,7 +101,7 @@ app.put('/api/history/:id', (req, res) => {
 });
 
 // Обслуживание статических файлов (HTML, CSS, JS) должно быть в конце
-app.use(express.static(path.join(__dirname, '')));
+//app.use(express.static(path.join(__dirname, '')));
 
 // Запускаем сервер
 app.listen(port, () => {
