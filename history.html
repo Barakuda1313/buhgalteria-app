@@ -1,0 +1,72 @@
+<!-- history.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История операций</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>История операций</h1>
+            <a href="/" class="SentData" style="text-decoration: none;">На главную</a>
+        </div>
+
+        <div class="history-container">
+            <table id="historyTable">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Пользователь</th>
+                        <th>Тип</th>
+                        <th>Категория</th>
+                        <th>Сумма</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Сюда будут загружаться записи из БД -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Модальное окно для редактирования (скрыто по умолчанию) -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Редактировать запись</h2>
+            <form id="editForm">
+                <input type="hidden" id="edit-id">
+                <label for="edit-date">Дата:</label>
+                <input type="date" id="edit-date" required>
+                
+                <label for="edit-user">Пользователь:</label>
+                <select id="edit-user" required>
+                    <option value="Aleksandr">Саньчи</option>
+                    <option value="Tatiana">Таньчи</option>
+                </select>
+
+                <label for="edit-type">Тип:</label>
+                <select id="edit-type" required>
+                    <option value="Расход">Расход</option>
+                    <option value="Приход">Приход</option>
+                </select>
+
+                <label for="edit-category">Категория:</label>
+                <input type="text" id="edit-category" required>
+
+                <label for="edit-amount">Сумма:</label>
+                <input type="number" id="edit-amount" required>
+
+                <button type="submit" class="SentData">Сохранить изменения</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="history.js"></script>
+</body>
+</html>

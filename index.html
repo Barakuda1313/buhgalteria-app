@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бухгалтерия v2.0</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body onload="loadPage()">
+    <div class="wrapper">
+        <div class="header fixheader">
+            <div class="userImg">
+                <img src="" alt="User" id="currentUserImg">
+            </div>
+            <div>
+                <select class="SelectUser" id="currentUser" onchange="changeUserImg(event)">
+                    <option value="Aleksandr">Саньчи</option>
+                    <option value="Tatiana">Таньчи</option>
+                </select>
+            </div>
+
+            <div class="BuySell" id="divButtonImg">
+                <button class="Buy" onclick="Entrance()">Приход</button>
+                <button class="Sell" onclick="Expenses()">Расход</button>
+                <input class="inputData" id="inputData" type="date" min="2024-01-01" max="2049-12-31" />
+            </div>
+        </div>
+
+        <div id="totalInfo">
+            <div>Приход: <span id="incomeTotal">0</span> ₽</div>
+            <div>Расход: <span id="expenseTotal">0</span> ₽</div>
+        </div>
+
+        <div class="categories" id="boxCategories">
+            <!-- Категории будут загружаться динамически из script.js -->
+        </div>
+
+        <div class="footer">
+            <a href="/history.html" class="SentData" style="text-decoration: none;">История</a>
+            <button class="SentData" onclick="saveData()">Сохранить</button>
+            <!-- Изменил "Отмена" на "Очистить" и привязал к новой функции -->
+            <button class="SentData" onclick="clearAllInputs()">Очистить</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
